@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ใส่ข้อมูลตัวอย่าง · เครื่องมือชั่วคราว</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🌱 ใส่ข้อมูลตัวอย่างลง Firestore</h1>
+    <p class="subtitle">
+      หน้านี้เป็น <strong>เครื่องมือชั่วคราวของสัปดาห์ที่ 6</strong> ไม่ใช่หนึ่งใน 5 หน้าจอของระบบ —
+      ใช้ครั้งเดียวเพื่อคัดลอกข้อมูลตัวอย่างจาก <code>js/data.js</code> ลง Firestore
+      ตามหัวข้อ 7 ของ <code>leaveeasy-spec.md</code>
+    </p>
+
+    <div class="card">
+      <p id="สถานะ">กดปุ่มด้านล่างเพื่อเริ่ม (กดซ้ำได้ปลอดภัย — ข้อมูลชุดเดิมจะถูกเขียนทับด้วยค่าเดิม ไม่เกิดรายการซ้ำ)</p>
+      <div class="btn-row">
+        <button type="button" id="ปุ่มใส่ข้อมูล">ใส่ข้อมูลตัวอย่างเลย</button>
+      </div>
+      <pre id="log" style="white-space:pre-wrap;margin-top:16px;font-size:13px;"></pre>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn btn-ghost" href="leave-requests.html">→ ไปดูรายการใบลา</a>
+      <a class="btn btn-ghost" href="index.html">← กลับหน้าแรก</a>
+    </div>
+  </div>
+
+  <script src="js/data.js"></script>
+  <script type="module" src="js/seed.js"></script>
+</body>
+</html>

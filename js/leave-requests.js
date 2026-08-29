@@ -1,15 +1,33 @@
 // ─────────────────────────────────────────────────────────────
 // js/leave-requests.js — หน้าที่ 1 รายการใบลา
-// สัปดาห์ที่ 6 (ต้นสัปดาห์): อ่านจากข้อมูลปลอมใน js/data.js
+// สัปดาห์ที่ 6: อ่านข้อมูลจริงจาก Firestore (โฟลเดอร์ leaveRequests)
+// ใบที่เพิ่งยื่นในหน้าถัดไปยังอยู่ใน sessionStorage เท่านั้น
+// (บันทึกลง Firestore จริงเป็นงานของสัปดาห์ที่ 7)
 // ─────────────────────────────────────────────────────────────
 
-(function () {
+import { db } from "./firebase-config.js";
+import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
+
+(async function () {
   var กล่อง = document.getElementById("ผลลัพธ์");
 
-  // ใบลาจากข้อมูลปลอม บวกกับใบที่เพิ่งยื่นในหน้าถัดไป
-  // (สัปดาห์นี้ยังไม่ต่อฐานข้อมูล ใบที่ยื่นใหม่จึงหายเมื่อปิดเบราว์เซอร์)
+  var ใบลาจากFirestore = [];
+  try {
+    // เรียงจากใหม่ไปเก่า ตามวันที่ยื่น (createdAt)
+    var ชุดเอกสาร = await getDocs(query(collection(db, "leaveRequests"), orderBy("createdAt", "desc")));
+    ชุดเอกสาร.forEach(function (เอกสาร) {
+      ใบลาจากFirestore.push(Object.assign({ id: เอกสาร.id }, เอกสาร.data()));
+    });
+  } catch (err) {
+    กล่อง.innerHTML =
+      "<p>⚠️ อ่านข้อมูลจาก Firestore ไม่สำเร็จ: " + esc(err.message) +
+      "</p><p class=\"hint\">ตรวจว่าสร้างฐานข้อมูล Firestore แล้ว และ Security Rules อนุญาตให้อ่านได้</p>";
+    return;
+  }
+
+  // ใบลาที่เพิ่งยื่นในหน้า "ยื่นใบลาใหม่" (สัปดาห์นี้ยังไม่บันทึกลง Firestore จริง)
   var ใบลาที่ยื่นใหม่ = JSON.parse(sessionStorage.getItem("ใบลาที่ยื่นใหม่") || "[]");
-  var ใบลาทั้งหมด = window.LEAVE_DATA.leaveRequests.concat(ใบลาที่ยื่นใหม่);
+  var ใบลาทั้งหมด = ใบลาจากFirestore.concat(ใบลาที่ยื่นใหม่);
 
   // ถ้ามีสถานะติดมาท้าย URL ให้กรองเฉพาะสถานะนั้น
   var สถานะที่กรอง = ค่าจากURL("status");
