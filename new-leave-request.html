@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ยื่นใบลาใหม่ · LeaveEasy</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/util.js" defer></script>
+  <script src="js/nav.js" defer></script>
+  <script src="js/data.js" defer></script>
+  <script src="js/new-leave-request.js" defer></script>
+</head>
+<body>
+  <div id="nav"></div>
+
+  <div class="container">
+    <h1>ยื่นใบลาใหม่</h1>
+    <p class="subtitle">กรอกให้ครบทุกช่อง แล้วกดบันทึก · ใบลาใหม่จะมีสถานะ รอพิจารณา เสมอ</p>
+
+    <div class="card">
+      <div id="ข้อความเตือน" class="alert alert-error hidden"></div>
+
+      <form id="ฟอร์มใบลา">
+        <label for="title">หัวข้อ</label>
+        <input type="text" id="title" placeholder="เช่น ลาพักร้อนไปเที่ยวกับครอบครัว">
+
+        <label for="reason">เหตุผลการลา</label>
+        <textarea id="reason" placeholder="เล่าเหตุผลสั้น ๆ ให้หัวหน้าเข้าใจ"></textarea>
+
+        <label for="leaveTypeId">ประเภทการลา</label>
+        <select id="leaveTypeId">
+          <option value="">— เลือกประเภทการลา —</option>
+        </select>
+
+        <label for="startDate">วันที่เริ่มลา</label>
+        <input type="date" id="startDate">
+
+        <label for="endDate">วันที่สิ้นสุด</label>
+        <input type="date" id="endDate">
+
+        <div class="btn-row">
+          <button type="submit" id="ปุ่มบันทึก">บันทึก</button>
+          <a class="btn btn-ghost" href="leave-requests.html">ยกเลิก</a>
+        </div>
+      </form>
+    </div>
+  </div>
+</body>
+</html>

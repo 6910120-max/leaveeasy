@@ -1,0 +1,148 @@
+/* ─────────────────────────────────────────────────────────────
+   css/style.css — หน้าตาที่ใช้ร่วมกันทุกหน้าของ LeaveEasy
+   แก้ที่ไฟล์นี้ที่เดียว ทุกหน้าเปลี่ยนตามพร้อมกัน
+   ───────────────────────────────────────────────────────────── */
+
+:root {
+  --สีหลัก: #1f5f8b;
+  --สีหลักเข้ม: #14405f;
+  --สีพื้น: #f4f6f8;
+  --สีขอบ: #d8dee4;
+  --สีตัวอักษร: #22282e;
+  --สีจาง: #667380;
+}
+
+* { box-sizing: border-box; }
+
+body {
+  margin: 0;
+  font-family: "Leelawadee UI", "Sarabun", "Segoe UI", "Noto Sans Thai", sans-serif;
+  font-size: 17px;
+  line-height: 1.7;
+  color: var(--สีตัวอักษร);
+  background: var(--สีพื้น);
+}
+
+/* ── แถบเมนูด้านบน ── */
+.navbar {
+  background: var(--สีหลัก);
+  color: #fff;
+  padding: 10px 16px;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px 18px;
+}
+.navbar .brand { font-weight: 700; font-size: 20px; margin-right: 10px; }
+.navbar a { color: #fff; text-decoration: none; padding: 4px 2px; }
+.navbar a:hover, .navbar a.active { border-bottom: 3px solid #ffd166; }
+.navbar .nav-user { margin-left: auto; display: flex; align-items: center; gap: 10px; font-size: 15px; }
+
+/* ── กรอบเนื้อหา ── */
+.container { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
+h1 { font-size: 28px; margin: 18px 0 6px; }
+h2 { font-size: 22px; margin: 26px 0 8px; }
+.subtitle { color: var(--สีจาง); margin-top: 0; }
+
+.card {
+  background: #fff;
+  border: 1px solid var(--สีขอบ);
+  border-radius: 10px;
+  padding: 18px;
+  margin-bottom: 18px;
+}
+
+/* ── ตาราง ── */
+table { width: 100%; border-collapse: collapse; background: #fff; }
+th, td { padding: 10px 12px; border-bottom: 1px solid var(--สีขอบ); text-align: left; }
+th { background: #eef2f5; font-weight: 700; }
+tbody tr.clickable:hover { background: #eaf3fa; cursor: pointer; }
+
+/* ── ป้ายสถานะ ── */
+.badge {
+  display: inline-block;
+  padding: 3px 12px;
+  border-radius: 999px;
+  font-size: 15px;
+  white-space: nowrap;
+}
+.badge-รอพิจารณา { background: #fff3cd; color: #7a5b00; border: 1px solid #ffe08a; }
+.badge-อนุมัติ   { background: #d8f3dc; color: #1b5e34; border: 1px solid #a8dfb8; }
+.badge-ไม่อนุมัติ { background: #fde2e1; color: #8b1f1a; border: 1px solid #f6b8b5; }
+
+/* ── ปุ่ม ── */
+button, .btn {
+  font-family: inherit;
+  font-size: 17px;
+  padding: 9px 18px;
+  border-radius: 8px;
+  border: 1px solid var(--สีหลัก);
+  background: var(--สีหลัก);
+  color: #fff;
+  cursor: pointer;
+  text-decoration: none;
+  display: inline-block;
+}
+button:hover, .btn:hover { background: var(--สีหลักเข้ม); }
+button:disabled { opacity: .55; cursor: not-allowed; }
+.btn-ghost { background: #fff; color: var(--สีหลัก); }
+.btn-ghost:hover { background: #e8f1f8; }
+.btn-danger { background: #b3261e; border-color: #b3261e; }
+.btn-danger:hover { background: #8c1c16; }
+.btn-ok { background: #1b7f45; border-color: #1b7f45; }
+.btn-ok:hover { background: #146134; }
+.btn-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 14px; }
+
+/* ── ฟอร์ม ── */
+label { display: block; font-weight: 700; margin: 14px 0 4px; }
+input, select, textarea {
+  font-family: inherit;
+  font-size: 17px;
+  width: 100%;
+  padding: 9px 10px;
+  border: 1px solid var(--สีขอบ);
+  border-radius: 8px;
+  background: #fff;
+}
+textarea { min-height: 110px; resize: vertical; }
+.hint { color: var(--สีจาง); font-size: 15px; margin-top: 4px; }
+
+/* ── กล่องข้อความแจ้งเตือน ── */
+.alert { padding: 12px 14px; border-radius: 8px; margin: 12px 0; }
+.alert-warn  { background: #fff8e1; border: 1px solid #ffd54f; color: #6d4c00; }
+.alert-error { background: #fdecea; border: 1px solid #f5b3ad; color: #8b1f1a; }
+.alert-ok    { background: #e8f5e9; border: 1px solid #a5d6a7; color: #1b5e34; }
+.alert-ai    { background: #eef4ff; border: 1px solid #b9ccf5; color: #1a3e7a; }
+.hidden { display: none; }
+
+/* ── รายการความเห็น ── */
+.comment { border-left: 4px solid var(--สีขอบ); padding: 6px 0 6px 12px; margin-bottom: 12px; }
+.comment .meta { color: var(--สีจาง); font-size: 15px; }
+
+/* ── กล่องแสดงตัวเลขสรุป ── */
+.stat-row { display: flex; flex-wrap: wrap; gap: 14px; }
+.stat {
+  flex: 1 1 200px;
+  background: #fff;
+  border: 1px solid var(--สีขอบ);
+  border-radius: 10px;
+  padding: 18px;
+  text-align: center;
+  text-decoration: none;
+  color: inherit;
+}
+.stat:hover { background: #eaf3fa; }
+.stat .number { font-size: 44px; font-weight: 700; line-height: 1.2; }
+
+/* ── รายการข้อมูลในหน้ารายละเอียด ── */
+.field-row { display: flex; flex-wrap: wrap; gap: 4px 10px; padding: 7px 0; border-bottom: 1px dashed var(--สีขอบ); }
+.field-row .k { min-width: 150px; font-weight: 700; }
+
+/* ── มือถือ ── */
+@media (max-width: 640px) {
+  body { font-size: 16px; }
+  .container { padding: 14px 12px 50px; }
+  th, td { padding: 8px 7px; font-size: 15px; }
+  .hide-mobile { display: none; }
+  .navbar .nav-user { margin-left: 0; width: 100%; }
+}

@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>LeaveEasy ระบบขอลาออนไลน์</title>
+  <link rel="stylesheet" href="css/style.css">
+  <script src="js/nav.js" defer></script>
+</head>
+<body>
+  <div id="nav"></div>
+
+  <div class="container">
+    <h1>LeaveEasy ระบบขอลาออนไลน์</h1>
+    <p class="subtitle">พนักงานยื่นใบลา หัวหน้าพิจารณา อนุมัติหรือไม่อนุมัติ แล้วบันทึกผลไว้ที่เดียว</p>
+
+    <div class="card">
+      <h2>หน้าจอของระบบ</h2>
+      <div class="btn-row">
+        <a class="btn" href="leave-requests.html">รายการใบลา</a>
+        <a class="btn btn-ghost" href="new-leave-request.html">ยื่นใบลาใหม่</a>
+        <a class="btn btn-ghost" href="leave-types.html">จัดการประเภทการลา</a>
+      </div>
+    </div>
+
+    <div class="card">
+      <h2>ผู้ใช้ของระบบ 3 บทบาท</h2>
+      <table>
+        <thead><tr><th>บทบาท</th><th>รหัสในระบบ</th><th>ทำอะไรได้</th></tr></thead>
+        <tbody>
+          <tr><td>🙋 ผู้ขอลา</td><td>employee</td><td>ยื่นใบลา ดูใบของตัวเอง ลบใบที่ยังรอพิจารณา</td></tr>
+          <tr><td>✅ ผู้อนุมัติ</td><td>manager</td><td>ดูใบลาทุกใบ อนุมัติหรือไม่อนุมัติ เขียนความเห็น</td></tr>
+          <tr><td>🧾 ฝ่ายบุคคล</td><td>hr</td><td>ทำได้ทุกอย่างที่ผู้อนุมัติทำได้ และจัดการประเภทการลา</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="card">
+      <h2>สถานะของใบลามี 3 ค่า</h2>
+      <p>
+        <span class="badge badge-รอพิจารณา">รอพิจารณา</span> →
+        <span class="badge badge-อนุมัติ">อนุมัติ</span> หรือ
+        <span class="badge badge-ไม่อนุมัติ">ไม่อนุมัติ</span>
+      </p>
+      <p class="hint">ใบที่พิจารณาแล้ว เปลี่ยนสถานะต่อไม่ได้</p>
+    </div>
+  </div>
+</body>
+</html>
