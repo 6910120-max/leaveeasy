@@ -48,11 +48,12 @@ as plain non-module scripts before the page-specific script.
 
 The migration to Firestore is happening incrementally, one page at a time, per spec §8:
 
-- **`js/leave-requests.js`** already reads live from Firestore (`import { db } from "./firebase-config.js"`,
-  a `type="module"` script) — this is the one page migrated so far.
-- **`js/new-leave-request.js`, `js/leave-request-detail.js`, `js/leave-types.js`** still read/write
-  `window.LEAVE_DATA` (from `js/data.js`, loaded as a plain script) in memory only — nothing persists
-  across a page refresh yet for these pages.
+- **`js/leave-requests.js`**, **`js/new-leave-request.js`**, and **`js/leave-request-detail.js`** already
+  read/write live Firestore (`import { db } from "./firebase-config.js"`, each a `type="module"` script).
+  `leave-request-detail.js` changes status with `updateDoc` (touches only the `status` field, never the
+  rest of the document) and reads/writes that request's `approvals` subcollection for comments.
+- **`js/leave-types.js`** is the one page still on `window.LEAVE_DATA` (from `js/data.js`, loaded as a
+  plain script) in memory only — nothing persists across a page refresh yet for this page.
 
 When migrating another page to Firestore, follow the same pattern as `leave-requests.js`: import `db`
 from `js/firebase-config.js`, switch the page's `<script>` tag to `type="module"`, and remove its
