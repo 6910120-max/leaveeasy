@@ -2,12 +2,16 @@
 // js/leave-requests.js — หน้าที่ 1 รายการใบลา
 // สัปดาห์ที่ 6: อ่านข้อมูลจริงจาก Firestore (โฟลเดอร์ leaveRequests)
 // ใบใหม่ที่ยื่นในหน้าถัดไปบันทึกลง Firestore จริงแล้ว จึงเห็นได้ทันทีที่นี่
+// สัปดาห์ที่ 7: รอสถานะล็อกอินพร้อมก่อน แล้วค่อยอ่านข้อมูล (กันหน้ารายการว่างตอนโหลด)
 // ─────────────────────────────────────────────────────────────
 
 import { db } from "./firebase-config.js";
+import { รอผู้ใช้ล็อกอิน } from "./auth-guard.js";
 import { collection, getDocs, query, orderBy } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 (async function () {
+  await รอผู้ใช้ล็อกอิน;
+
   var กล่อง = document.getElementById("ผลลัพธ์");
 
   var ใบลาจากFirestore = [];

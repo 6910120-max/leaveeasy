@@ -40,6 +40,7 @@ body {
 
 /* ── กรอบเนื้อหา ── */
 .container { max-width: 960px; margin: 0 auto; padding: 20px 16px 60px; }
+.container-narrow { max-width: 420px; }
 h1 { font-size: 28px; margin: 18px 0 6px; }
 h2 { font-size: 22px; margin: 26px 0 8px; }
 .subtitle { color: var(--สีจาง); margin-top: 0; }

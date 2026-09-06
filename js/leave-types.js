@@ -1,16 +1,30 @@
 // ─────────────────────────────────────────────────────────────
 // js/leave-types.js — หน้าที่ 4 จัดการประเภทการลา
 // สัปดาห์ที่ 6 (ต้นสัปดาห์): เพิ่ม แก้ ลบ ในหน่วยความจำเท่านั้น
+// สัปดาห์ที่ 7: เพิ่ม/แก้/ลบ เป็นสิทธิ์ของ hr เท่านั้นตาม ACL.md (บทบาทอื่นดูตารางได้อย่างเดียว)
+// (ยังเป็นแค่ระดับปุ่มบนหน้าจอ ยังไม่ใช่กฎที่คลังข้อมูล — กฎจริงมาสัปดาห์ที่ 8)
 // ─────────────────────────────────────────────────────────────
 
-(function () {
+import { รอผู้ใช้ล็อกอิน } from "./auth-guard.js";
+
+(async function () {
+  var ผู้ใช้ = await รอผู้ใช้ล็อกอิน;
+  var แก้ไขได้ = ผู้ใช้.role === "hr";
+
   var รายการ = window.LEAVE_DATA.leaveTypes.slice();   // ทำสำเนาไว้แก้
   var ที่วางตาราง = document.getElementById("ตารางประเภท");
   var ช่องชื่อใหม่ = document.getElementById("ชื่อประเภทใหม่");
   var กล่องเตือน = document.getElementById("เตือนประเภท");
+  var กล่องเพิ่มประเภท = document.getElementById("กล่องเพิ่มประเภท");
+
+  if (!แก้ไขได้ && กล่องเพิ่มประเภท) {
+    กล่องเพิ่มประเภท.classList.add("hidden");
+  }
 
   วาดตาราง();
-  document.getElementById("ปุ่มเพิ่ม").addEventListener("click", เพิ่มประเภท);
+  if (แก้ไขได้) {
+    document.getElementById("ปุ่มเพิ่ม").addEventListener("click", เพิ่มประเภท);
+  }
 
   function วาดตาราง() {
     if (รายการ.length === 0) {
@@ -18,16 +32,22 @@
       return;
     }
 
-    var html = "<table><thead><tr><th>ชื่อประเภทการลา</th><th>จัดการ</th></tr></thead><tbody>";
+    var html = "<table><thead><tr><th>ชื่อประเภทการลา</th>" +
+      (แก้ไขได้ ? "<th>จัดการ</th>" : "") + "</tr></thead><tbody>";
     รายการ.forEach(function (ประเภท) {
-      html +=
-        "<tr><td>" + esc(ประเภท.name) + "</td><td>" +
-        '<button type="button" class="btn-ghost" data-edit="' + esc(ประเภท.id) + '">แก้ไข</button> ' +
-        '<button type="button" class="btn-danger" data-del="' + esc(ประเภท.id) + '">ลบ</button>' +
-        "</td></tr>";
+      html += "<tr><td>" + esc(ประเภท.name) + "</td>";
+      if (แก้ไขได้) {
+        html += "<td>" +
+          '<button type="button" class="btn-ghost" data-edit="' + esc(ประเภท.id) + '">แก้ไข</button> ' +
+          '<button type="button" class="btn-danger" data-del="' + esc(ประเภท.id) + '">ลบ</button>' +
+          "</td>";
+      }
+      html += "</tr>";
     });
     html += "</tbody></table>";
     ที่วางตาราง.innerHTML = html;
+
+    if (!แก้ไขได้) return;
 
     ที่วางตาราง.querySelectorAll("[data-edit]").forEach(function (ปุ่ม) {
       ปุ่ม.addEventListener("click", function () { แก้ประเภท(ปุ่ม.dataset.edit); });
