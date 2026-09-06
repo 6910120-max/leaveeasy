@@ -2,12 +2,17 @@
 // js/new-leave-request.js — หน้าที่ 2 ยื่นใบลาใหม่
 // สัปดาห์ที่ 6 (ต่อ): บันทึกใบลาใหม่ลง Firestore จริง (โฟลเดอร์ leaveRequests)
 // รายการเลื่อนลงประเภทการลาก็อ่านจาก Firestore จริงเช่นกัน (โฟลเดอร์ leaveTypes)
+// สัปดาห์ที่ 7: requesterId/requesterName มาจากคนที่ล็อกอินอยู่จริง ไม่ใช่ค่าคงที่แล้ว
 // ─────────────────────────────────────────────────────────────
 
 import { db } from "./firebase-config.js";
+import { รอผู้ใช้ล็อกอิน } from "./auth-guard.js";
 import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 (async function () {
+  // รอสถานะล็อกอินพร้อมก่อน แล้วค่อยอ่าน/เขียนข้อมูล
+  var ผู้ใช้ = await รอผู้ใช้ล็อกอิน;
+
   var ฟอร์ม = document.getElementById("ฟอร์มใบลา");
   var ช่องประเภท = document.getElementById("leaveTypeId");
   var กล่องเตือน = document.getElementById("ข้อความเตือน");
@@ -55,12 +60,11 @@ import { collection, addDoc, getDocs } from "https://www.gstatic.com/firebasejs/
 
     var ประเภท = ประเภททั้งหมด.find(function (t) { return t.id === ค่า.leaveTypeId; });
 
-    // สัปดาห์นี้ยังไม่มีล็อกอิน จึงสมมติว่าผู้ขอลาคือ สมชาย ใจดี
     var ใบใหม่ = {
       title: ค่า.title,
       reason: ค่า.reason,
       status: "รอพิจารณา",                       // ใบใหม่เริ่มที่ รอพิจารณา เสมอ
-      requesterId: "u001", requesterName: "สมชาย ใจดี",
+      requesterId: ผู้ใช้.uid, requesterName: ผู้ใช้.displayName || ผู้ใช้.email,
       approverId: "",      approverName: "",
       leaveTypeId: ประเภท.id, leaveTypeName: ประเภท.name,
       startDate: ค่า.startDate,

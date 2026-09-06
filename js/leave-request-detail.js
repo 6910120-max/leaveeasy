@@ -4,15 +4,21 @@
 // - อ่านใบลา 1 ใบ + ความเห็นทั้งหมดของใบนั้น (โฟลเดอร์ย่อย approvals)
 // - ปุ่มอนุมัติ/ไม่อนุมัติ แก้เฉพาะช่อง status เท่านั้น (ใช้ updateDoc)
 // - ส่งความเห็นใหม่ บันทึกลงโฟลเดอร์ย่อย approvals จริง
+// สัปดาห์ที่ 7: รอสถานะล็อกอินพร้อมก่อน แล้วค่อยอ่านข้อมูล · authorId/authorName
+// ของความเห็นใหม่มาจากคนที่ล็อกอินอยู่จริง · ปุ่มอนุมัติ/ไม่อนุมัติ/ลบ จำกัดตาม ACL.md
+// (ยังเป็นแค่ระดับปุ่มบนหน้าจอ ยังไม่ใช่กฎที่คลังข้อมูล — กฎจริงมาสัปดาห์ที่ 8)
 // ─────────────────────────────────────────────────────────────
 
 import { db } from "./firebase-config.js";
+import { รอผู้ใช้ล็อกอิน } from "./auth-guard.js";
 import {
   doc, getDoc, updateDoc, deleteDoc,
   collection, getDocs, addDoc
 } from "https://www.gstatic.com/firebasejs/12.18.0/firebase-firestore.js";
 
 (async function () {
+  var ผู้ใช้ = await รอผู้ใช้ล็อกอิน;
+
   var รหัสใบลา = ค่าจากURL("id");
   var กล่องใบลา = document.getElementById("กล่องใบลา");
   var กล่องความเห็น = document.getElementById("กล่องความเห็น");
@@ -68,25 +74,39 @@ import {
       return '<div class="field-row"><span class="k">' + r[0] + "</span><span>" + r[1] + "</span></div>";
     }).join("");
 
-    // ปุ่มอนุมัติ / ไม่อนุมัติ / ลบ ขึ้นเฉพาะใบที่ยังรอพิจารณา
+    // ตาม ACL.md:
+    // - อนุมัติ/ไม่อนุมัติ: เฉพาะ manager/hr และห้ามอนุมัติใบที่ตัวเองเป็นผู้ยื่น
+    // - ลบใบลา: เฉพาะเจ้าของใบเท่านั้น (ไม่ว่า role อะไร เพราะ manager/hr ก็ยื่นใบของตัวเองได้)
+    var เป็นเจ้าของใบ = ใบ.requesterId === ผู้ใช้.uid;
+    var เป็นผู้มีสิทธิ์อนุมัติ = (ผู้ใช้.role === "manager" || ผู้ใช้.role === "hr") && !เป็นเจ้าของใบ;
+
     if (ใบ.status === "รอพิจารณา") {
-      html +=
-        '<div class="btn-row">' +
-        '<button type="button" class="btn-ok" id="ปุ่มอนุมัติ">อนุมัติ</button>' +
-        '<button type="button" class="btn-danger" id="ปุ่มไม่อนุมัติ">ไม่อนุมัติ</button>' +
-        "</div>" +
-        '<div class="btn-row">' +
-        '<button type="button" class="btn-danger" id="ปุ่มลบ">ลบใบลา</button>' +
-        "</div>";
+      if (เป็นผู้มีสิทธิ์อนุมัติ) {
+        html +=
+          '<div class="btn-row">' +
+          '<button type="button" class="btn-ok" id="ปุ่มอนุมัติ">อนุมัติ</button>' +
+          '<button type="button" class="btn-danger" id="ปุ่มไม่อนุมัติ">ไม่อนุมัติ</button>' +
+          "</div>";
+      } else if (เป็นเจ้าของใบ && (ผู้ใช้.role === "manager" || ผู้ใช้.role === "hr")) {
+        html += '<p class="hint">นี่คือใบลาของคุณเอง จึงอนุมัติ/ไม่อนุมัติเองไม่ได้ ต้องให้ผู้อื่นพิจารณา</p>';
+      }
+      if (เป็นเจ้าของใบ) {
+        html +=
+          '<div class="btn-row">' +
+          '<button type="button" class="btn-danger" id="ปุ่มลบ">ลบใบลา</button>' +
+          "</div>";
+      }
     } else {
       html += '<p class="hint">ใบนี้พิจารณาแล้ว จึงเปลี่ยนสถานะต่อไม่ได้</p>';
     }
 
     กล่องใบลา.innerHTML = html;
 
-    if (ใบ.status === "รอพิจารณา") {
+    if (เป็นผู้มีสิทธิ์อนุมัติ && ใบ.status === "รอพิจารณา") {
       document.getElementById("ปุ่มอนุมัติ").addEventListener("click", function () { เปลี่ยนสถานะ("อนุมัติ"); });
       document.getElementById("ปุ่มไม่อนุมัติ").addEventListener("click", function () { เปลี่ยนสถานะ("ไม่อนุมัติ"); });
+    }
+    if (เป็นเจ้าของใบ && ใบ.status === "รอพิจารณา") {
       document.getElementById("ปุ่มลบ").addEventListener("click", ลบใบลา);
     }
   }
@@ -151,9 +171,8 @@ import {
     }
     เตือน.classList.add("hidden");
 
-    // สัปดาห์นี้ยังไม่มีล็อกอิน จึงสมมติว่าผู้เขียนคือ สมหญิง รักงาน
     var ความเห็นใหม่ = {
-      authorId: "u002", authorName: "สมหญิง รักงาน",
+      authorId: ผู้ใช้.uid, authorName: ผู้ใช้.displayName || ผู้ใช้.email,
       message: ข้อความ,
       createdAt: เวลาตอนนี้()
     };
