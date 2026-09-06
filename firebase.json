@@ -1,0 +1,20 @@
+{
+  "hosting": {
+    "public": ".",
+    "ignore": [
+      "firebase.json",
+      "**/.*",
+      "**/node_modules/**",
+      "leaveeasy-spec.md",
+      "CLAUDE.md",
+      "README.md",
+      "docs/**",
+      "package.json",
+      "package-lock.json",
+      "serve.json"
+    ]
+  },
+  "firestore": {
+    "rules": "firestore.rules"
+  }
+}
