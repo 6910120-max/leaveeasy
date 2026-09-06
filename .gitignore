@@ -16,6 +16,7 @@ desktop.ini
 *.log
 .vscode/
 .idea/
+.firebase/
 
 
 # ── ไฟล์ตั้งค่าและไฟล์ที่มีคีย์ลับ (ห้าม push เด็ดขาด) ──
