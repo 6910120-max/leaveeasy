@@ -7,6 +7,7 @@
   <link rel="stylesheet" href="css/style.css">
   <script src="js/util.js" defer></script>
   <script src="js/nav.js" defer></script>
+  <script src="js/ai-config.local.js"></script>
   <script type="module" src="js/new-leave-request.js"></script>
 </head>
 <body>
@@ -30,6 +31,12 @@
         <select id="leaveTypeId">
           <option value="">— เลือกประเภทการลา —</option>
         </select>
+
+        <div class="btn-row">
+          <button type="button" id="ปุ่มAI" class="btn btn-ghost">🤖 ให้ AI ช่วยจัดประเภทการลา</button>
+        </div>
+        <p class="hint">AI จะอ่านข้อความในช่อง "เหตุผลการลา" ด้านบน แล้วเสนอประเภทให้ — อย่าใช้ข้อมูลส่วนบุคคลจริงตอนทดสอบ เพราะข้อความจะถูกส่งไปยัง AI ภายนอก (OpenRouter)</p>
+        <div id="ข้อความAI" class="alert alert-ai hidden"></div>
 
         <label for="startDate">วันที่เริ่มลา</label>
         <input type="date" id="startDate">

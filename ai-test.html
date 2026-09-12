@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ทดสอบผู้ช่วย AI (OpenRouter) · เครื่องมือชั่วคราว</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div class="container">
+    <h1>🤖 ทดสอบผู้ช่วย AI ผ่าน OpenRouter</h1>
+    <p class="subtitle">
+      หน้านี้เป็น <strong>เครื่องมือทดสอบชั่วคราวของสัปดาห์ที่ 8</strong> ไม่ใช่หนึ่งใน 5 หน้าจอของระบบ —
+      ใช้ลองยิงข้อความ "สวัสดี" ไปหาโมเดล AI ผ่าน OpenRouter แล้วดูคำตอบ
+    </p>
+
+    <div class="card">
+      <p id="สถานะคีย์" class="hint"></p>
+      <div class="btn-row">
+        <button type="button" id="ปุ่มส่ง">ส่งข้อความ "สวัสดี"</button>
+      </div>
+      <pre id="log" style="white-space:pre-wrap;margin-top:16px;font-size:13px;"></pre>
+    </div>
+
+    <div class="btn-row">
+      <a class="btn btn-ghost" href="index.html">← กลับหน้าแรก</a>
+    </div>
+  </div>
+
+  <script src="js/ai-config.local.js"></script>
+  <script src="js/ai-test.js"></script>
+</body>
+</html>
